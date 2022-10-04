@@ -26,20 +26,51 @@ class AuthController extends Controller
      *
      * @return \Illuminate\Http\JsonResponse
      */
-    public function login(Request $request)
+    /*public function login(Request $request)
     {
         $credentials = $request->only('email', 'password');
 
         /*if ($token = $this->guard('api')->attempt($credentials)) {
             return $this->respondWithToken($token);
-        }*/
+        }//
         if ($token = auth()->guard('api')->attempt($credentials)) {
             return $this->respondWithToken($token);
         }
 
         return response()->json(['error' => 'Unauthorized'], 401);
+    }*/
+	
+	 /**
+     * Validate the user login request.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return void
+     *
+     * @throws \Illuminate\Validation\ValidationException
+     */
+    protected function validateLogin(Request $request)
+    {
+        $request->validate([
+            'email' => 'required|string',
+            'password' => 'required|string',
+        ]);
     }
 	
+	public function login(Request $request){
+		$this->validateLogin($request);
+        $credentials = request(['email', 'password']);
+
+        if (!$token = auth('api')->attempt($credentials)) {
+            return response()->json([
+                'errors' => [
+                    'account' => [
+                        "Invalid email or password"
+                    ]
+                ]
+            ], 422);
+        }
+        return $this->respondWithToken($token);	
+	}
 	 /**
      * Get a JWT token for registered user.
      *
@@ -54,17 +85,17 @@ class AuthController extends Controller
 			'email' => 'required|unique:users,email',
 			'password' => 'required|min:6'
 		]);
-		
+
 		$user = User::create([
-			'name' => $request->name,
+		'name' => $request->name,
 			'email' => $request->email,
 			'password' => bcrypt($request->password)
 		]);
-		
+
 		// Get the token
 		$token = auth('api')->login($user);
 		return $this->respondWithToken($token);
-		
+
     }
 
     /**
