@@ -87,7 +87,7 @@ class AuthController extends Controller
 		]);
 
 		$user = User::create([
-		'name' => $request->name,
+			'name' => $request->name,
 			'email' => $request->email,
 			'password' => bcrypt($request->password)
 		]);
@@ -157,4 +157,40 @@ class AuthController extends Controller
     {
         return Auth::guard();
     }
+	
+	/**
+	*
+	* Update User Profile
+	*
+	*/
+	public function profile(Request $request){
+	
+		//return response()->json(['message' => 'Working good']);
+		$user = auth('api')->user();
+		
+		
+		$this->validate($request,[
+			'name' => 'required',
+			'email' => "required|unique:users,email, $user->id",
+			'password' => 'sometimes|nullable|min:4'
+		]);
+		//return response()->json(['info' => $user]);
+		
+		$user->update([
+			'name' => $request->name,
+			'email' => $request->email		
+		]);
+		
+		if($request->password){
+			$user->update([
+				'password' => bcrypt($request->password)
+			]);
+		}
+		
+		return response()->json([
+			'success' => true,
+			'user' => $user
+		], 200);
+		
+	}
 }
