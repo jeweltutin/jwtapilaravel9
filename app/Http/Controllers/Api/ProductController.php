@@ -23,8 +23,10 @@ class ProductController extends Controller
         $products = Product::all();
         return response()->json([
             'status' => 'success',
-            'products' => $products,
+            'products' => $products
         ]);
+		
+		//return response()->json($products);
     }
 
     /**
@@ -142,4 +144,12 @@ class ProductController extends Controller
             'product' => $product
         ]);
     }
+	
+	public function personal_info(){
+		return response()->json([
+            'status' => 'success',
+            'message' => 'Personal Information',
+            //'product' => $product
+        ]);	
+	}
 }

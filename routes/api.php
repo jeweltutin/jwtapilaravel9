@@ -3,7 +3,11 @@
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\AuthController;
+
 use App\Http\Controllers\Api\ProductController;
+
+use App\Http\Controllers\ForgotPasswordController;
+use App\Http\Controllers\ResetPasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -32,6 +36,9 @@ Route::group([
     Route::post('refresh', [AuthController::class, 'refresh']);
     Route::post('me', [AuthController::class, 'me']);
     Route::post('profile', [AuthController::class, 'profile']);
+
+	Route::post('password/email', [ForgotPasswordController::class, 'sendPasswordResetEmail']);
+    Route::post('password/reset', [ResetPasswordController::class, 'updatePassword']);
 });
 
 Route::controller(ProductController::class)->group(function () {
@@ -40,4 +47,6 @@ Route::controller(ProductController::class)->group(function () {
     Route::get('product/{id}', 'show');
     Route::post('product/{id}', 'update');
     Route::delete('product/{id}', 'destroy');
+
+	Route::get('pinfo', 'personal_info');
 });
