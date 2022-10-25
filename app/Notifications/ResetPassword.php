@@ -12,7 +12,6 @@ class ResetPassword extends Notification
     use Queueable;
 
     public $token;
-
     /**
      * Create a new notification instance.
      *
@@ -42,13 +41,13 @@ class ResetPassword extends Notification
      */
     public function toMail($notifiable)
     {
-        $link = url(route('password.reset', ['token' => $this->token, 'email' => $notifiable->getEmailForPasswordReset()], false));
-        //$link = "http://127.0.0.1:3000/reset-password/" . $this->token . '?email=' . $notifiable->getEmailForPasswordReset();
+        $link = "http://127.0.0.1:3000/reset-password/" . $this->token . '?email=' . $notifiable->getEmailForPasswordReset();
+        // $link = url(route('password.reset', ['token' => $this->token, 'email' => $notifiable->getEmailForPasswordReset()], false));
+
         return (new MailMessage)
-                    ->line('The introduction to the notification.')
-                    ->action('Reset Password', $link)
-                    ->line('Thank you for using our application!');
-                    //->markdown('vendor.notifications.email')
+            ->line('The introduction to the notification.')
+            ->action('Reset Password', $link)
+            ->line('Thank you for using our application!');
     }
 
     /**

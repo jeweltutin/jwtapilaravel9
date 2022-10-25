@@ -25,7 +25,7 @@ class ProductController extends Controller
             'status' => 'success',
             'products' => $products
         ]);
-		
+
 		//return response()->json($products);
     }
 
@@ -144,12 +144,12 @@ class ProductController extends Controller
             'product' => $product
         ]);
     }
-	
+
 	public function personal_info(){
 		return response()->json([
             'status' => 'success',
             'message' => 'Personal Information',
             //'product' => $product
-        ]);	
+        ]);
 	}
 }

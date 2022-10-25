@@ -6,8 +6,8 @@ use App\Http\Controllers\AuthController;
 
 use App\Http\Controllers\Api\ProductController;
 
-use App\Http\Controllers\ForgotPasswordController;
-use App\Http\Controllers\ResetPasswordController;
+use App\Http\Controllers\Api\ForgotPasswordController;
+use App\Http\Controllers\Api\ResetPasswordController;
 
 /*
 |--------------------------------------------------------------------------
@@ -37,7 +37,7 @@ Route::group([
     Route::post('me', [AuthController::class, 'me']);
     Route::post('profile', [AuthController::class, 'profile']);
 
-	Route::post('password/email', [ForgotPasswordController::class, 'sendPasswordResetEmail']);
+    Route::post('password/email', [ForgotPasswordController::class, 'sendPasswordResetEmail']);
     Route::post('password/reset', [ResetPasswordController::class, 'updatePassword']);
 });
 
